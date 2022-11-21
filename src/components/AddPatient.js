@@ -15,7 +15,7 @@ function AddPatient() {
     plan: "",
   };
   const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState(initialValues);
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleChange = (e) => {
@@ -51,7 +51,7 @@ function AddPatient() {
   const validate = (values) => {
     const errors = {};
     const regexName = /^[a-zA-Z ]*$/;
-    const regexSsn = /^[0-9]*$/;
+    const regexSsn = /^\d{4}-\d{2}-\d{4}$/;
     const regexAddress = /[^A-Za-z0-9]+/;
     const regexEmail = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 
@@ -70,11 +70,7 @@ function AddPatient() {
     if (!values.ssn) {
       errors.ssn = "SSN is required!";
     } else if (!regexSsn.test(values.ssn)) {
-      errors.ssn = "Please enter Numbers only!";
-    } else if (values.ssn.length < 10) {
-      errors.ssn = "SSN must not be less than 10 digit!";
-    } else if (values.ssn.length > 10) {
-      errors.ssn = "SSN must not be greater than 10 digit!";
+      errors.ssn = "SSN is not valid!";
     }
 
     // address validation
@@ -132,7 +128,7 @@ function AddPatient() {
     <div className="container">
       {Object.keys(formErrors).length === 0 && isSubmit ? <PopUp /> : null}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}e>
         <h4>Patient Information</h4>
         <div className="ui divider"></div>
         <div className="ui form">
@@ -143,9 +139,10 @@ function AddPatient() {
               name="name"
               value={formValues.name}
               onChange={handleChange}
-              className="form-control"
+              className={`form-control ${formErrors.name ?"is-invalid":"is-valid"}`}
             />
           </div>
+
           <p>{formErrors.name}</p>
           <div className="field">
             <label>Social Security number (SSN)</label>
@@ -155,7 +152,7 @@ function AddPatient() {
               placeholder="XXX-XX-XXXX"
               value={formValues.ssn}
               onChange={handleChange}
-              className="form-control"
+              className={`form-control ${formErrors.ssn ?"is-invalid":"is-valid"}`}
             />
           </div>
           <p>{formErrors.ssn}</p>
@@ -166,7 +163,7 @@ function AddPatient() {
               name="address"
               value={formValues.address}
               onChange={handleChange}
-              className="form-control"
+              className={`form-control ${formErrors.address ?"is-invalid":"is-valid"}`}
             />
           </div>
           <p>{formErrors.address}</p>
@@ -177,7 +174,7 @@ function AddPatient() {
               name="dob"
               value={formValues.dob}
               onChange={handleChange}
-              className="form-control"
+              className={`form-control ${formErrors.dob ?"is-invalid":"is-valid"}`}
               max={disableDates()}
             />
           </div>
@@ -189,7 +186,7 @@ function AddPatient() {
               name="email"
               value={formValues.email}
               onChange={handleChange}
-              className="form-control"
+              className={`form-control ${formErrors.email ?"is-invalid":"is-valid"}`}
             />
           </div>
           <p>{formErrors.email}</p>
@@ -200,7 +197,7 @@ function AddPatient() {
               name="contactNumber"
               value={formValues.contactNumber}
               onChange={handleChange}
-              className="form-control"
+              className={`form-control ${formErrors.contactNumber ?"is-invalid":"is-valid"}`}
             />
           </div>
           <p>{formErrors.contactNumber}</p>
@@ -212,7 +209,7 @@ function AddPatient() {
               name="payer"
               value={formValues.payer}
               onChange={handleChange}
-              className="form-control"
+              className={`form-control ${formErrors.payer ?"is-invalid":"is-valid"}`}
             />
           </div>
           <p>{formErrors.payer}</p>
@@ -223,7 +220,7 @@ function AddPatient() {
               name="plan"
               value={formValues.plan}
               onChange={handleChange}
-              className="form-control"
+              className={`form-control ${formErrors.plan ?"is-invalid":"is-valid"}`}
             />
           </div>
           <p>{formErrors.plan}</p>
